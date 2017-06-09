@@ -25,15 +25,15 @@
 
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style type="text/css" rel="stylesheet">
+/*#app {*/
+  /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+  /*-webkit-font-smoothing: antialiased;*/
+  /*-moz-osx-font-smoothing: grayscale;*/
+  /*text-align: center;*/
+  /*color: #2c3e50;*/
+  /*margin-top: 60px;*/
+/*}*/
 
 #app .tab{
 	display: flex;
@@ -44,6 +44,10 @@
 #app .tab .tab-item{
 	flex: 1;
 	text-align: center;
-	
 }
+  #app .tab .tab-item > a{
+    display: block;
+    font-size: 14px;
+    color: rgb(77, 85, 93);
+  }
 </style>
