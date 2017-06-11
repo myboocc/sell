@@ -25,6 +25,8 @@ module.exports = {
     'space-in-parens': 0,
     'keyword-spacing': 0,
     'no-trailing-spaces': 0,
-    'semi-spacing': 0
+    'semi-spacing': 0,
+    'no-labels': 0,
+    'Missing semicolon':0
 	}
 }
