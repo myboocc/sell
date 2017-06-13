@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import App from './App';
 import goods from 'components/goods/goods';
-import ratings from 'components/ratings/ratings';
+import ratingMode from 'components/ratingMode/ratingMode';
 import seller from 'components/seller/seller';
 
 import 'common/stylus/index.css';
@@ -22,8 +22,8 @@ router.map({
 	'/goods': {
 		component: goods
 	},
-	'/ratings': {
-		component: ratings
+	'/ratingMode': {
+		component: ratingMode
 	},
   '/seller': {
     component: seller
