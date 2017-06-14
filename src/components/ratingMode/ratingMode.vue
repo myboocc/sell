@@ -1,5 +1,5 @@
 <template>
-  <div class="ratingMode">
+  <div class="ratingMode" v-el:rating-mode>
     <div class="ratingModeContent">
       <div class="overview">
         <div class="overview-left">
@@ -26,16 +26,45 @@
       </div>
       <split></split>
       <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="ratings"></ratingselect>
+      <!--具体内容-->
+      <div class="rating-wrapper">
+        <ul>
+          <li class="rating-item border-1px" v-for="rating in ratings">
+            <div class="avatar">
+              <img :src="rating.avatar" width="28" height="28">
+            </div>
+            <div class="content">
+              <h1 class="name">{{rating.username}}</h1>
+              <div class="star-wrapper">
+                <star :size="24" :score="rating.score"></star>
+                <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}</span>
+              </div>
+              <p class="text">{{rating.text}}</p>
+              <div class="recommend" v-show="rating.recommend && rating.recommend.length > 0">
+                <span class="icon-thumb_up">
+                  <span v-for="item in rating.recommend">{{item}}</span>
+                </span>
+              </div>
+              <div class="time">
+                {{rating.rateTime | formatDate}}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import {formatDate} from 'common/js/date';
+    import BScroll from 'better-scroll';
     import star from 'components/star/star';
     import split from 'components/split/split';
     import ratingselect from 'components/ratings/ratings';
 
     const ALL = 2;
+    const ERR_OK = 0;
 
     export default {
       props: {
@@ -51,7 +80,23 @@
         };
       },
       created() {
-
+        this.$http.get('/api/ratings').then((response) => {
+          response = response.body;
+          if(response.errno === ERR_OK){
+            this.ratings = response.data;
+            this.$nextTick(() => {
+              this.scroll = new BScroll(this.$els.ratingMode, {
+                click: true
+              });
+            });
+          };
+        });
+      },
+      filters: {
+        formatDate(time) {
+          let date = new Date(time);
+          return formatDate(date, 'yyyy-MM-dd HH:mm');
+        }
       },
       components: {
         star,
@@ -62,6 +107,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl";
+
   .ratingMode
     position: absolute;
     top:174px;
@@ -129,4 +176,46 @@
             font-size :12px;
             color: rgb(147, 153, 159);
             margin-left :12px;
+    .rating-wrapper
+      padding: 0 18px;
+      .rating-item
+        display: flex;
+        padding: 18px 0;
+        border-1px(rgba(7,17,27,0.1));
+        .avatar
+          flex: 0 0 28px;
+          width: 28px;
+          margin-right :12px;
+          img
+            border-radius :50%;
+        .content
+          flex:1;
+          position: relative;
+          .name
+            margin-bottom :4px;
+            font-size :12px;
+            line-height :12px;
+            color: rgb(7,17,27);
+          .star-wrapper
+            margin-bottom :6px;
+            font-size :0;
+            .star
+              display: inline-block;
+              vertical-align :top;
+              margin-right :6px;
+            .delivery
+              display: inline-block;
+              vertical-align :top;
+              line-height :12px;
+              font-size :10px;
+              color: rgb(147, 153, 159);
+          .text
+            line-height :18px;
+            font-size :12px;
+            margin-bottom :8px;
+            color: rgb(7, 17, 27);
+          .recommend
+            line-height :16px;
+            .icon-thumb_up, .item
+              display: inline-block;
 </style>
